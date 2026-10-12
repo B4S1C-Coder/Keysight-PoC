@@ -12,3 +12,8 @@ wheels/
 # Virtual environments
 .venv
 .env
+mcmaster_session.json
+mcmaster_direct_response.html
+mcmaster_direct_result.png
+mcmaster_investigation.png
+mcmaster_login_result.png
