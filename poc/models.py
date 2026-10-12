@@ -1,5 +1,5 @@
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, Union
+from pydantic import BaseModel, Field
 
 class Dim(BaseModel):
     nominal: Optional[float] = None
@@ -15,3 +15,19 @@ class PackageDims(BaseModel):
     length: Measure
     width: Measure
     height: Measure
+
+class AttrRow(BaseModel):
+    attribute: str
+    value: Optional[Union[float, str]] = None
+    unit: str = ""
+    tolerance: str = ""
+    note: str = ""
+    source: str = ""
+
+class ExtractionResult(BaseModel):
+    mpn: str
+    manufacturer: str
+    source_pdf: str
+    set1: list[AttrRow]
+    set2: list[AttrRow]
+    warnings: list[str] = Field(default_factory=list)

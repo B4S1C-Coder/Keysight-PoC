@@ -2,46 +2,43 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
-from typing import cast
 from pathlib import Path
 
 import pytest
-from google import genai
-from google.genai import types
-from poc import PackageDims, llm_client
+from poc import PackageDims, llm_extract_package_dims
 
 MODEL = os.getenv("GEMINI_MODEL", "")
 
-PROMPT = (
-    "The attached datasheet has a package drawing for style PK14-2. Return the "
-    "overall component dimensions: length, width (overall body width of the "
-    "component, not the lead width) and height (thickness), each in inches and "
-    "mm. Use `max_` only for dimensions labelled MAX, and `tolerance` for +/- "
-    "values. Leave unknown fields null."
-)
+# PROMPT = (
+#     "The attached datasheet has a package drawing for style PK14-2. Return the "
+#     "overall component dimensions: length, width (overall body width of the "
+#     "component, not the lead width) and height (thickness), each in inches and "
+#     "mm. Use `max_` only for dimensions labelled MAX, and `tolerance` for +/- "
+#     "values. Leave unknown fields null."
+# )
 
 PDF = Path(__file__).parent.parent / "data" / "Component_Datasheet_1.pdf"
 
-def extract_package_dims(pdf_path: Path) -> PackageDims:
-    client = llm_client()
+# def extract_package_dims(pdf_path: Path) -> PackageDims:
+#     client = llm_client()
 
-    res = client.models.generate_content(
-        model=MODEL,
-        contents=[
-            types.Part.from_bytes(data=pdf_path.read_bytes(), mime_type="application/pdf"),
-            PROMPT,
-        ],
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=PackageDims,
-            temperature=0,
-        ),
-    )
+#     res = client.models.generate_content(
+#         model=MODEL,
+#         contents=[
+#             types.Part.from_bytes(data=pdf_path.read_bytes(), mime_type="application/pdf"),
+#             PROMPT,
+#         ],
+#         config=types.GenerateContentConfig(
+#             response_mime_type="application/json",
+#             response_schema=PackageDims,
+#             temperature=0,
+#         ),
+#     )
 
-    if res.parsed is None:
-        raise ValueError(f"Response did not match schema. Raw text: {res.text}")
+#     if res.parsed is None:
+#         raise ValueError(f"Response did not match schema. Raw text: {res.text}")
 
-    return cast(PackageDims, res.parsed)
+#     return cast(PackageDims, res.parsed)
 
 pytestmark = [
     pytest.mark.live,
@@ -54,7 +51,7 @@ pytestmark = [
 @pytest.fixture(scope="module")
 def dims() -> PackageDims:
     assert PDF.exists(), f"PDF not found: {PDF}"
-    return extract_package_dims(PDF)
+    return llm_extract_package_dims(PDF, "PK14-2")
 
 def test_schema_is_valid(dims):
     assert isinstance(dims, PackageDims)

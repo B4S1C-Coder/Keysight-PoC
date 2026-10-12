@@ -1,0 +1,18 @@
+{
+  "_comment": "Transcribed by hand from the package drawings in the datasheets and checked against Gemini output. Used when --vision is off or fails. Add a package here to support it without an LLM.",
+  "PK14-2": {
+    "package_type": "PK14-2",
+    "length": {
+      "inches": {"nominal": 0.035, "tolerance": 0.005},
+      "mm": {"nominal": 0.889, "tolerance": 0.127}
+    },
+    "width": {
+      "inches": {"max_": 0.012},
+      "mm": {"max_": 0.305}
+    },
+    "height": {
+      "inches": {"nominal": 0.004, "tolerance": 0.002},
+      "mm": {"nominal": 0.102, "tolerance": 0.051}
+    }
+  }
+}
