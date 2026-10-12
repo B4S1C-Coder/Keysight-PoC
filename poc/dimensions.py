@@ -43,11 +43,12 @@ def resolve_dimensions(
 
     if use_vision:
         try:
-            # add real code
-            vision = None
-            pass
+            from .llms import llm_extract_package_dims
+            vision = llm_extract_package_dims(pdf_path, package)
+    
         except Exception as exc:
             warnings.append(f"Vision extraction failed ({type(exc).__name__}: {exc}); falling back to manual data.")
+        
         else:
             if manual:
                 # bad = diff_dims(vision, manual)
