@@ -3,9 +3,6 @@ import json
 import re
 from urllib.parse import urlencode
 
-from playwright.sync_api import sync_playwright
-
-
 BASE_URL = (
     "https://www.mcmaster.com/"
     "mv1791657140/WebParts/Navigate/ItmPrsnttnWebPart.aspx"
